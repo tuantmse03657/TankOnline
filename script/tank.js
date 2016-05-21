@@ -25,6 +25,24 @@ class Tank
                 break;
             }
         }
+        for(var i=0;i<arrSteel.length;i++)
+        {
+            var rect2 = {x:arrSteel[i].x, y: arrSteel[i].y, width:16,height:16};
+            if(this.check(rect1,rect2)==true)
+            {
+                isMove = false;
+                break;
+            }
+        }
+        for(var i=0;i<arrWater.length;i++)
+        {
+            var rect2 = {x:arrWater[i].x, y: arrWater[i].y, width:32,height:32};
+            if(this.check(rect1,rect2)==true)
+            {
+                isMove = false;
+                break;
+            }
+        }
         if(isMove==true)
         {
             this.x += this.speedX;

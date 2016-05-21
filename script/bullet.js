@@ -10,7 +10,6 @@ class Bullet{
     }
     update()
     {
-        console.log(arrBrick.length);
         var isshoot = true;
         var rect1 = {x:this.x, y:this.y,width:8,height:8};
         for(var i=0;i<arrBrick.length;i++)
@@ -23,6 +22,17 @@ class Bullet{
                 this.x = -100;
                 this.y = -100;
                 arrBrick.splice(i,1);
+                break;
+            }
+        }
+        for(var i=0;i<arrSteel.length;i++)
+        {
+            var rect2 = {x:arrSteel[i].x, y: arrSteel[i].y, width:16,height:16};
+            if(this.check(rect1,rect2)==true)
+            {
+                isshoot = false;
+                this.x = -100;
+                this.y = -100;
                 break;
             }
         }
@@ -40,7 +50,7 @@ class Bullet{
         if(images == "left"){
             this.speedy = 0;
             this.sprite.src = "images/bullet_left.png";
-            this.speedx = -20;
+            this.speedx = -16;
         }
         if(images == "right"){
             this.speedy =0;

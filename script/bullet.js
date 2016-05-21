@@ -40,7 +40,7 @@ class Bullet{
         if(images == "left"){
             this.speedy = 0;
             this.sprite.src = "images/bullet_left.png";
-            this.speedx = -16;
+            this.speedx = -20;
         }
         if(images == "right"){
             this.speedy =0;

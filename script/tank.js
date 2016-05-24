@@ -5,13 +5,13 @@ class Tank
 {
     constructor(x, y){
         this.bullet = new Bullet(-100,-100);
+        this.id = 0;
         this.x = x;
         this.y = y;
+        this.direction = "down";
         this.speedX = 0;
         this.speedY = 0;
-        this.sprite = new Image();
-        this.sprite.src = "images/tank_armor_down_c0_t1_f.png";
-        this.direction = "down";
+        this.sprite = new tankAnimation(this.x,this.y,"tank_player1_",2,8,"");
     }
     update(){
         var isMove = true;
@@ -45,6 +45,7 @@ class Tank
         }
         if(isMove==true)
         {
+            this.sprite.update(this.x,this.y,this.speedX,this.speedY);
             this.x += this.speedX;
             this.y += this.speedY;
         }
@@ -59,34 +60,38 @@ class Tank
         }
     }
     draw(context){
-        context.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        context.drawImage(this.sprite, this.x, this.y);
+        this.sprite.draw(context);
     }
     MoveLeft()
     {
+        this.direction="left";
+        this.sprite.moveleft();
         this.speedY = 0;
-        this.sprite.src = "images/tank_armor_left_c0_t1_f.png";
-        this.speedX = -4;
+        this.speedX = -2;
         
     }
     MoveRight()
     {
+        this.direction="right";
+        this.sprite.moveright();
         this.speedY = 0;
-        this.sprite.src = "images/tank_armor_right_c0_t1_f.png";
-        this.speedX = 4;
+        this.speedX = 2;
+        
     }
     MoveDown()
     {
+        this.direction="down";
+        this.sprite.movedown(this.x,this.y);
         this.speedX = 0;
-        this.sprite.src = "images/tank_armor_down_c0_t1_f.png";
-        this.speedY = 4;
+        this.speedY = 2;
         
     }
     MoveUp()
     {
+        this.direction="up";
+        this.sprite.moveup();
         this.speedX = 0;
-        this.sprite.src = "images/tank_armor_up_c0_t1_f.png";
-        this.speedY = -4;
+        this.speedY = -2;
         
     }
     shoot()

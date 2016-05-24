@@ -6,7 +6,6 @@ class Bullet{
         this.speedx = 0;
         this.speedy = 0;
         this.sprite = new Image();
-        this.sprite.src = "";
     }
     update()
     {
@@ -44,28 +43,28 @@ class Bullet{
     }
     draw(context)
     {
-        context.drawImage(this.sprite, this.x,this.y);
+        context.drawImage(this.sprite,this.x,this.y);
     }
     setspeed(images){
         if(images == "left"){
             this.speedy = 0;
-            this.sprite.src = "images/bullet_left.png";
-            this.speedx = -16;
+            this.sprite.src="images/bullet_left.png";
+            this.speedx = -8;
         }
         if(images == "right"){
             this.speedy =0;
-            this.sprite.src = "images/bullet_right.png";
-            this.speedx = 16;
+            this.sprite.src="images/bullet_right.png";
+            this.speedx = 8;
         }
         if(images == "down"){
             this.speedx = 0;
-            this.sprite.src = "images/bullet_down.png";
-            this.speedy = 16;
+            this.sprite.src="images/bullet_down.png";
+            this.speedy = 8;
         }
         if(images == "up"){
             this.speedx=0;
-            this.sprite.src = "images/bullet_up.png";
-            this.speedy = -16;
+            this.sprite.src="images/bullet_up.png";
+            this.speedy = -8;
         }
     }
     check(rect1,rect2)
@@ -79,20 +78,3 @@ class Bullet{
         return false;
     }
 }
-    /*if(images == "http://localhost:51055/New/images/tank_armor_left_c0_t1_f.png"){
-        bullet.src = "images/bullet_left.png";
-        bx -= 5;
-    }
-    if(images == "http://localhost:51055/New/images/tank_armor_right_c0_t1_f.png"){
-        bullet.src = "images/bullet_right.png";
-        bx += 5;
-    }
-    if(images == "http://localhost:51055/New/images/tank_armor_down_c0_t1_f.png"){
-        bullet.src = "images/bullet_left.png";
-        by += 5;
-    }
-    if(images == "http://localhost:51055/New/images/tank_armor_up_c0_t1_f.png"){
-        bullet.src = "images/bullet_up.png";
-        by -= 5;
-    }*/
-

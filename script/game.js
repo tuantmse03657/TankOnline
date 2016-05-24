@@ -1,6 +1,8 @@
 /**
  * Created by Manh Tuan on 5/16/2016.
  */
+var socket;
+var enemyTanks = [];
 window.onload= function(){
     var canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
@@ -15,37 +17,78 @@ window.onload= function(){
     createmap();
     savebrick();
     setInterval(()=>{
-        tank.update();
-        tank.draw(context);
-        drawmap(context);
-        tank.bullet.draw(context);
-    }, 17)
+        update();
+        draw(context);
+    }, 17);
+    initSocketClient();
 };
-function gameStart(){
-    tank = new Tank(16,16);
-    tank.direction = "down";
+function initSocketClient()
+{
+    socket = io.connect();
+    socket.emit('player_created',{x:tank.x,y:tank.y});
+    socket.on("info_player",function(data){
+        console.log("My ID " + data.id);
+        tank.id = data.id;
+        for (var i = 0; i < data.tanks.length; i++){
+            var newTank = new Tank(data.tanks[i].x,data.tanks[i].y);
+            newTank.id=data.tanks[i].id;
+            enemyTanks.push(newTank);
+        }
+    });
+    socket.on('new_player_connected',function(data){
+        var newTank = new Tank(data.x,data.y);
+        newTank.id = data.id;
+        enemyTanks.push(newTank);
+    });
 }
-
+function gameStart(){
+    var x=Math.floor((Math.random() * 200) + 1);
+    tank = new Tank(x,0);
+}
+function update(){
+    tank.update();
+    for(var i = 0;i<arrWater.length;i++){
+        arrWater[i].update();
+    }
+    if(tank.speedX !=0 || tank.speedY !=0)
+    {
+        socket.emit('tank_update',{id:tank.id,x:tank.x,y:tank.y});
+    }
+}
+function draw(context)
+{
+    socket.on('update',function(data){
+        for(var i =0;i<enemyTanks.length;i++)
+        {
+            if(enemyTanks[i].id == data.id)
+            {
+                enemyTanks[i].x = data.x;
+                enemyTanks[i].y = data.y;
+            }
+        }
+    });
+    context.fillRect(0, 0, window.innerWidth,window.innerHeight);
+    tank.draw(context);
+    drawmap(context);
+    for(var i = 0;i<enemyTanks.length;i++)
+    {
+        enemyTanks[i].sprite = new tankAnimation(enemyTanks[i].x,enemyTanks[i].y,"tank_player1_",2,8,"");
+        enemyTanks[i].draw(context);
+    }
+    tank.bullet.draw(context);
+}
  window.onkeydown = function(e){
    switch (e.keyCode){
        case 65://a
-           tank.sprite.src= "images/tank_armor_left_c0_t1_f.png";
-           tank.direction = "left";
            tank.MoveLeft();
            break;
        case 68://d
-           tank.sprite.src= "images/tank_armor_right_c0_t1_f.png";
-           tank.direction = "right";
            tank.MoveRight();
            break;
        case 83://s
-           tank.sprite.src= "images/tank_armor_down_c0_t1_f.png";
-           tank.direction = "down";
            tank.MoveDown();
            break;
        case 87://w
-           tank.sprite.src= "images/tank_armor_up_c0_t1_f.png";
-           tank.direction = "up";
            tank.MoveUp();
            break;
        case 90:
